@@ -20,6 +20,8 @@ package maps
 		{
 			super();
 			loadMap(new txtMap, cursedWoodsSprite, 16, 16);
+			setTileProperties(8, 0);
+			setTileProperties(7, 0x1111);
 		}
 		
 	}
