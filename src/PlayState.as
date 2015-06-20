@@ -34,7 +34,7 @@ package
 			heroSprite.x = heroSpawnX;
 			heroSprite.y = heroSpawnY;
 			add(heroSprite);
-			
+			// Spawn slime
 			var s:Slime = new Slime();
 			s.x = heroSprite.x;
 			s.y = heroSprite.y;

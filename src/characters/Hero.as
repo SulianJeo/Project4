@@ -32,9 +32,9 @@ package characters
 			addAnimation("walkupleft", [36, 37, 38, 39, 38, 37], 8, true);
 			// Set hitbox
 			width = 16;
-			height = 24
+			height = 16
 			offset.x = 8;
-			offset.y = 4;
+			offset.y = 15;
 		}
 		
 		private function processControl():void
