@@ -11,13 +11,14 @@ package characters
 	public class Hero extends FlxSprite 
 	{
 		//Import graphic
-		[Embed(source = "../../assets/Chrom.png")]
+		[Embed(source = "../../assets/characters/Chrom.png")]
 		internal var chromSprite:Class;
 		// Speed variables
 		private var walkingSpeed:Number = 100;
 		
 		public function Hero(X:Number=0, Y:Number=0) 
 		{
+			// Graphic and animations
 			loadGraphic(chromSprite, true, false, 32, 32);
 			addAnimation("idle", [0, 1, 2, 3, 2, 1], 4, true);
 			addAnimation("walkleft", [8, 9, 10, 11, 10, 9], 8, true);
@@ -28,12 +29,16 @@ package characters
 			addAnimation("walkdownleft", [28, 29, 30, 31, 30, 29], 8, true);
 			addAnimation("walkupright", [32, 33, 34, 35, 34, 33], 8, true);
 			addAnimation("walkupleft", [36, 37, 38, 39, 38, 37], 8, true);
-			
+			// Set hitbox
+			width = 16;
+			height = 24
+			offset.x = 8;
+			offset.y = 4;
 		}
 		
 		override public function update():void
 		{
-			//reset movement every frame
+			//reset velocity every frame
 			velocity.x = 0
 			velocity.y = 0
 			// Hero movement
@@ -69,6 +74,7 @@ package characters
 			{
 				velocity.x = velocity.x + walkingSpeed;
 			}
+			// Hero Animations
 			if (velocity.x > 0 && velocity.y == 0)
 			{
 				play("walkright");
@@ -105,6 +111,7 @@ package characters
 			{
 				play("idle");
 			}
+			// Update
 			super.update();
 		}
 		

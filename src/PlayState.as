@@ -1,6 +1,7 @@
 package 
 {
 	import characters.Hero;
+	import maps.Map1;
 	import org.flixel.*;
 	/**
 	 * ...
@@ -8,6 +9,7 @@ package
 	 */
 	public class PlayState extends FlxState
 	{
+		private var mapSprite:Map1
 		private var heroSprite:Hero;
 		
 		private var heroSpawnX:Number;
@@ -20,6 +22,9 @@ package
 		
 		override public function create():void 
 		{
+			// Spawn map
+			mapSprite = new Map1;
+			add(mapSprite);
 			// Spawn hero
 			heroSprite = new Hero;
 			heroSpawnX = FlxG.width / 2 - heroSprite.width / 2;
@@ -27,7 +32,10 @@ package
 			heroSprite.x = heroSpawnX;
 			heroSprite.y = heroSpawnY;
 			add(heroSprite);
-			// 
+			// Fix camera
+			FlxG.camera.setBounds(0, 0, mapSprite.width, mapSprite.height);
+			FlxG.camera.follow(heroSprite, 2);
+			FlxG.camera.deadzone = new FlxRect(FlxG.width*3/8, FlxG.height*3/8, FlxG.width/4, FlxG.height/4);
 		}
 		
 		override public function update():void

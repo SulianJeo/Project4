@@ -7,7 +7,7 @@
     <movie path="bin\Project4.swf" />
     <movie fps="60" />
     <movie width="1280" />
-    <movie height="720" />
+    <movie height="768" />
     <movie version="17" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
