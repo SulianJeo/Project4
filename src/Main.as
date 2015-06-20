@@ -10,6 +10,8 @@ package
 	[Frame(factoryClass="Preloader")]
 	public class Main extends Sprite 
 	{
+		// Declare game
+		var game:FirstGame;
 
 		public function Main() 
 		{
@@ -20,9 +22,9 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			// entry point
-			var game:FirstGame = new FirstGame;
-			
+			// Initialize game
+			game = new FirstGame;
+			// Spawn game
 			addChild(game);
 		}
 
