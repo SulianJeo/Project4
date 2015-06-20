@@ -1,6 +1,8 @@
 package 
 {
 	import characters.Hero;
+	import characters.Slime;
+	import flash.display.Sprite;
 	import maps.Map1;
 	import org.flixel.*;
 	/**
@@ -32,6 +34,12 @@ package
 			heroSprite.x = heroSpawnX;
 			heroSprite.y = heroSpawnY;
 			add(heroSprite);
+			
+			var s:Slime = new Slime();
+			s.x = heroSprite.x;
+			s.y = heroSprite.y;
+			add(s);
+			
 			// Fix camera
 			FlxG.camera.setBounds(0, 0, mapSprite.width, mapSprite.height);
 			FlxG.camera.follow(heroSprite, 2);
