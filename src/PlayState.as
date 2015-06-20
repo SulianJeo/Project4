@@ -1,5 +1,6 @@
 package 
 {
+	import characters.Enemy;
 	import characters.Hero;
 	import characters.Slime;
 	import flash.display.Sprite;
@@ -11,9 +12,12 @@ package
 	 */
 	public class PlayState extends FlxState
 	{
-		private var mapSprite:Map1
+		// Map variable
+		private var mapSprite:Map1;
+		// Character variables
 		private var heroSprite:Hero;
-		
+		private var enemySprite:Enemy;
+		// Hero spawn location
 		private var heroSpawnX:Number;
 		private var heroSpawnY:Number;
 		
@@ -34,12 +38,16 @@ package
 			heroSprite.x = heroSpawnX;
 			heroSprite.y = heroSpawnY;
 			add(heroSprite);
-			
+			// Spawn enemy
+			enemySprite = new Enemy(heroSprite);
+			enemySprite.x = 24;
+			enemySprite.y = 48;
+			add(enemySprite);
+			// Spawn slime
 			var s:Slime = new Slime(heroSprite);
 			s.x = heroSprite.x;
 			s.y = heroSprite.y;
-			add(s);
-			
+			//add(s);
 			// Fix camera
 			FlxG.camera.setBounds(0, 0, mapSprite.width, mapSprite.height);
 			FlxG.camera.follow(heroSprite, 2);
@@ -50,6 +58,7 @@ package
 		override public function update():void
 		{
 			FlxG.collide(mapSprite, heroSprite);
+			FlxG.collide(mapSprite, enemySprite);
 			super.update();
 		}
 		
