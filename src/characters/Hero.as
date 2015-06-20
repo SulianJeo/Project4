@@ -1,5 +1,6 @@
 package characters 
 {
+	import flash.geom.Point;
 	import org.flixel.*;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -36,45 +37,28 @@ package characters
 			offset.y = 4;
 		}
 		
-		override public function update():void
+		private function processControl():void
 		{
-			//reset velocity every frame
-			velocity.x = 0
-			velocity.y = 0
-			// Hero movement
-			if (FlxG.keys.justPressed("UP") || FlxG.keys.justPressed("W"))
-			{
-				velocity.y = velocity.y - walkingSpeed;
-			}
-			if (FlxG.keys.justPressed("DOWN") || FlxG.keys.justPressed("S"))
-			{
-				velocity.y = velocity.y + walkingSpeed;
-			}
-			if (FlxG.keys.justPressed("LEFT") || FlxG.keys.justPressed("A"))
-			{
-				velocity.x = velocity.x - walkingSpeed;
-			}
-			if (FlxG.keys.justPressed("RIGHT") || FlxG.keys.justPressed("D"))
-			{
-				velocity.x = velocity.x + walkingSpeed;
-			}
 			if (FlxG.keys.UP || FlxG.keys.W)
 			{
-				velocity.y = velocity.y - walkingSpeed;
+				velocity.y = walkingSpeed;
 			}
 			if (FlxG.keys.DOWN || FlxG.keys.S)
 			{
-				velocity.y = velocity.y + walkingSpeed;
+				velocity.y = + walkingSpeed;
 			}
 			if (FlxG.keys.LEFT || FlxG.keys.A)
 			{
-				velocity.x = velocity.x - walkingSpeed;
+				velocity.x = - walkingSpeed;
 			}
 			if (FlxG.keys.RIGHT || FlxG.keys.D)
 			{
-				velocity.x = velocity.x + walkingSpeed;
+				velocity.x = + walkingSpeed;
 			}
-			// Hero Animations
+		}
+		
+		private function processAnimation():void
+		{
 			if (velocity.x > 0 && velocity.y == 0)
 			{
 				play("walkright");
@@ -111,6 +95,28 @@ package characters
 			{
 				play("idle");
 			}
+		}
+		
+		private function normalizeVelocity():void
+		{
+			var p:Point = new Point();
+			velocity.copyToFlash(p);
+			p.normalize(walkingSpeed);
+			velocity.copyFromFlash(p);
+		}
+		
+		override public function update():void
+		{
+			//reset velocity every frame
+			velocity.x = 0
+			velocity.y = 0
+			
+			processControl();
+			normalizeVelocity();
+			processAnimation();
+			
+			// Hero Animations
+			
 			// Update
 			super.update();
 		}
