@@ -34,6 +34,14 @@ package
 			FlxG.switchState(new PlayState);
 		}
 		
+		override public function update():void 
+		{
+			if (FlxG.keys.justPressed("TAB")) {
+					startGame();
+			}
+			super.update();
+		}
+		
 	}
 
 }
