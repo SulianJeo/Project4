@@ -41,19 +41,19 @@ package characters
 		{
 			if (FlxG.keys.UP || FlxG.keys.W)
 			{
-				velocity.y = walkingSpeed;
+				velocity.y = -walkingSpeed;
 			}
 			if (FlxG.keys.DOWN || FlxG.keys.S)
 			{
-				velocity.y = + walkingSpeed;
+				velocity.y = +walkingSpeed;
 			}
 			if (FlxG.keys.LEFT || FlxG.keys.A)
 			{
-				velocity.x = - walkingSpeed;
+				velocity.x = -walkingSpeed;
 			}
 			if (FlxG.keys.RIGHT || FlxG.keys.D)
 			{
-				velocity.x = + walkingSpeed;
+				velocity.x = +walkingSpeed;
 			}
 		}
 		
