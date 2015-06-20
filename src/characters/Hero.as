@@ -15,9 +15,9 @@ package characters
 		[Embed(source = "../../assets/characters/Chrom.png")]
 		internal var chromSprite:Class;
 		// Speed variables
-		private var walkingSpeed:Number = 100;
+		private var walkingSpeed:Number = 96;
 		
-		public function Hero(X:Number=0, Y:Number=0) 
+		public function Hero() 
 		{
 			// Graphic and animations
 			loadGraphic(chromSprite, true, false, 32, 32);
@@ -32,11 +32,11 @@ package characters
 			addAnimation("walkupleft", [36, 37, 38, 39, 38, 37], 8, true);
 			// Set hitbox
 			width = 16;
-			height = 24
+			height = 16;
 			offset.x = 8;
-			offset.y = 4;
+			offset.y = 15;
 		}
-		
+		// Player controls
 		private function processControl():void
 		{
 			if (FlxG.keys.UP || FlxG.keys.W)
@@ -45,7 +45,7 @@ package characters
 			}
 			if (FlxG.keys.DOWN || FlxG.keys.S)
 			{
-				velocity.y = +walkingSpeed;
+				velocity.y = walkingSpeed;
 			}
 			if (FlxG.keys.LEFT || FlxG.keys.A)
 			{
@@ -53,10 +53,10 @@ package characters
 			}
 			if (FlxG.keys.RIGHT || FlxG.keys.D)
 			{
-				velocity.x = +walkingSpeed;
+				velocity.x = walkingSpeed;
 			}
 		}
-		
+		// Play hero animations
 		private function processAnimation():void
 		{
 			if (velocity.x > 0 && velocity.y == 0)
@@ -96,7 +96,7 @@ package characters
 				play("idle");
 			}
 		}
-		
+		// Normalize diagonal movement to walking speed.
 		private function normalizeVelocity():void
 		{
 			var p:Point = new Point();
@@ -107,16 +107,13 @@ package characters
 		
 		override public function update():void
 		{
-			//reset velocity every frame
+			// Eeset velocity every frame
 			velocity.x = 0
 			velocity.y = 0
-			
+			// Run all functions
 			processControl();
 			normalizeVelocity();
 			processAnimation();
-			
-			// Hero Animations
-			
 			// Update
 			super.update();
 		}
