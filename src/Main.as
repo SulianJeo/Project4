@@ -11,7 +11,7 @@ package
 	public class Main extends Sprite 
 	{
 		// Declare game
-		var game:FirstGame;
+		private var game:FirstGame;
 
 		public function Main() 
 		{
