@@ -39,7 +39,7 @@ package
 			heroSprite.y = heroSpawnY;
 			add(heroSprite);
 			// Spawn enemy
-			enemySprite = new Enemy(heroSprite);
+			enemySprite = new Enemy(heroSprite, mapSprite);
 			enemySprite.x = 24;
 			enemySprite.y = 48;
 			add(enemySprite);

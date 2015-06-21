@@ -16,19 +16,29 @@ package behaviours
 			behaviourMap = new Object();
 		}
 		
-		public function addBehaviour(name:String, behaviour:Behaviour) {
+		public function addBehaviour(name:String, behaviour:Behaviour):void {
 			behaviour.setTarget(target);
 			behaviourMap[name] = behaviour;
 		}
 		
-		public function removeBehaviour(name:String) {
+		public function activate(name:String):void {
+			behaviourMap[name].active = true;
+		}
+		
+		public function deactivate(name:String):void {
+			behaviourMap[name].active = false;
+		}
+		
+		public function removeBehaviour(name:String):void {
 			delete behaviourMap[name];
 		}
 		
-		public function update() {
+		public function update():void {
 			for each(var value:Behaviour in behaviourMap) {
-				value.update();
+				if(value.active){
+					value.update();
+				}
 			}
 		}
-
+	}
 }

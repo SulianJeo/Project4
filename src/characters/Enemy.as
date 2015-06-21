@@ -1,5 +1,9 @@
 package characters 
 {
+	import behaviours.Behaviour;
+	import behaviours.BehaviourRunner;
+	import behaviours.BreadCrumbs;
+	import behaviours.BrownianWalk;
 	import flash.geom.Point;
 	import mx.core.FlexSprite;
 	import org.flixel.FlxSprite;
@@ -22,8 +26,9 @@ package characters
 		private var target:FlxSprite;
 		// Taunted variable (determines whether to chase or not)
 		private var taunted:Boolean = false;
+		private var behave:BehaviourRunner;
 		
-		public function Enemy(target:FlxSprite)
+		public function Enemy(target:FlxSprite, map:FlxTilemap)
 		{
 			// Graphic and animations
 			loadGraphic(enemySprite, true, false, 32, 32);
@@ -43,36 +48,29 @@ package characters
 			offset.y = 15;
 			// set target property equivalent to passed variable
 			this.target = target;
+			
+			// add brownian walk and breakdumbs AI but only activate BW in the beginning
+			behave = new BehaviourRunner(this);
+			behave.addBehaviour("bw", new BrownianWalk(20, 20, 2));
+			behave.addBehaviour("bc", new BreadCrumbs(target, map));
+			behave.activate("bw");
 		}
 		// Enemy AI
 		private function lookOut(target:FlxSprite):void
 		{
 			if (Math.sqrt(Math.pow(target.x - x, 2) + (Math.pow(target.y - y, 2))) < tauntDistance)
 			{
-				taunted = true;
+				// change behaviours
+				behave.deactivate("bw");
+				behave.activate("bc");
 			}
 			if (Math.sqrt(Math.pow(target.x - x, 2) + (Math.pow(target.y - y, 2))) > stopDistance)
 			{
 				taunted = false;
 			}
 		}
-		private function processMovement():void
-		{
-			if (taunted)
-			{
-				velocity.x = target.x - x;
-				velocity.y = target.y - y;
-				normalizeVelocity();
-			}
-			else
-			{
-				velocity.x = 0;
-				velocity.y = 0;
-			}
-			
-		}
 		// Normalize diagonal movement to walking speed.
-		private function normalizeVelocity():void
+		public function normalizeVelocity():void
 		{
 			var p:Point = new Point();
 			velocity.copyToFlash(p);
@@ -122,14 +120,13 @@ package characters
 		
 		override public function update():void 
 		{
-			// Reset velocity every frame
-			velocity.x = 0
-			velocity.y = 0
 			// Run all functions
 			lookOut(target);
-			processMovement()
-			normalizeVelocity()
-			processAnimation()
+			//run behavrous
+			behave.update();
+			normalizeVelocity();
+			processAnimation();
+			
 			// Update
 			super.update();
 		}

@@ -8,7 +8,8 @@ package behaviours
 	public class Behaviour 
 	{
 		
-		private var target:FlxSprite;
+		protected var target:FlxSprite;
+		public var active:Boolean = false;
 		
 		public function Behaviour() 
 		{
@@ -20,7 +21,7 @@ package behaviours
 			this.target = target;
 		}
 		
-		public function update() {
+		public function update():void {
 			
 		}
 		
