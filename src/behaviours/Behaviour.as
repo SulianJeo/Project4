@@ -10,7 +10,12 @@ package behaviours
 		
 		private var target:FlxSprite;
 		
-		public function Behaviour(target:FlxSprite) 
+		public function Behaviour() 
+		{
+			
+		}
+		
+		public function setTarget(target:FlxSprite):void
 		{
 			this.target = target;
 		}
