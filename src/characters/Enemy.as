@@ -51,7 +51,7 @@ package characters
 			
 			// add brownian walk and breakdumbs AI but only activate BW in the beginning
 			behave = new BehaviourRunner(this);
-			behave.addBehaviour("bw", new BrownianWalk(20, 20, 2));
+			behave.addBehaviour("bw", new BrownianWalk(200, 10, 5));
 			behave.addBehaviour("bc", new BreadCrumbs(target, map));
 			behave.activate("bw");
 		}

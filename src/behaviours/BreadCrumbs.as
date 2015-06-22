@@ -29,7 +29,7 @@ package behaviours
 			waypoints = new Vector.<FlxPoint>();
 		}
 		
-		private function dist2(p1:FlxPoint, p2:FlxPoint):Number {
+		public static function dist2(p1:FlxPoint, p2:FlxPoint):Number {
 			var dx:Number = p1.x - p2.x;
 			var dy:Number = p1.y - p2.y;
 			return dx * dx + dy * dy;
