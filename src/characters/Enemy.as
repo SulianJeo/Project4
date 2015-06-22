@@ -69,13 +69,22 @@ package characters
 		{
 			if (Math.sqrt(Math.pow(target.x - x, 2) + (Math.pow(target.y - y, 2))) < tauntDistance)
 			{
-				// change behaviours
-				behave.deactivate("bw");
-				behave.activate("bc");
+				taunted = true;
 			}
 			if (Math.sqrt(Math.pow(target.x - x, 2) + (Math.pow(target.y - y, 2))) > stopDistance)
 			{
 				taunted = false;
+			}
+			if (taunted) {
+				// change behaviours
+				behave.deactivate("bw");
+				behave.activate("bc");
+			}
+			if (!taunted)
+			{
+				// change behaviours
+				behave.deactivate("bc");
+				behave.activate("bw");
 			}
 		}
 		// Normalize diagonal movement to walking speed.
