@@ -18,12 +18,19 @@ package characters
 		// Import graphic
 		[Embed(source = "../../assets/characters/Myrmidon.png")]
 		internal var enemySprite:Class;
-		// Speed variable and distance varaibles
+		
+		// Speed variable and distance variables
 		private var walkingSpeed:Number = 48;
 		private var tauntDistance:Number = 80;
 		private var stopDistance:Number = 256;
+		
+		// Walking angle variables
+		private var PI_6:Number = Math.PI / 6;
+		private var PI_3:Number = Math.PI / 3;
+		
 		// Target variable (used to save passed variable).
 		private var target:FlxSprite;
+		
 		// Taunted variable (determines whether to chase or not)
 		private var taunted:Boolean = false;
 		private var behave:BehaviourRunner;
@@ -41,11 +48,13 @@ package characters
 			addAnimation("walkdownright", [28, 29, 30, 31, 30, 29], 8, true);
 			addAnimation("walkupleft", [32, 33, 34, 35, 34, 33], 8, true);
 			addAnimation("walkupright", [36, 37, 38, 39, 38, 37], 8, true);
+			
 			// Set hitbox
 			width = 16;
 			height = 16;
 			offset.x = 8;
 			offset.y = 15;
+			
 			// set target property equivalent to passed variable
 			this.target = target;
 			
@@ -77,38 +86,43 @@ package characters
 			p.normalize(walkingSpeed);
 			velocity.copyFromFlash(p);
 		}
+		
 		// Play enemy animations
 		private function processAnimation():void
 		{
-			if (velocity.x > 0 && velocity.y == 0)
+			// Determine travel angle
+			var walking_angle:Number = Math.atan2(-velocity.y, velocity.x)
+			
+			// Match animations to angles
+			if (walking_angle <= PI_6 && walking_angle >= -PI_6)
 			{
 				play("walkright");
 			}
-			if (velocity.x < 0 && velocity.y == 0)
+			if ((walking_angle >= 5 * PI_6 && walking_angle <= Math.PI) || (walking_angle <= -5 * PI_6 && walking_angle >= -Math.PI))
 			{
 				play("walkleft");
 			}
-			if (velocity.x == 0 && velocity.y > 0)
+			if (walking_angle <= -PI_3 && walking_angle >= -2 * PI_3)
 			{
 				play("walkdown");
 			}
-			if (velocity.x == 0 && velocity.y < 0)
+			if (walking_angle <= 2 * PI_3 && walking_angle >= PI_3)
 			{
 				play("walkup");
 			}
-			if (velocity.x > 0 && velocity.y > 0)
+			if (walking_angle > -PI_3 && walking_angle < -PI_6)
 			{
 				play("walkdownright");
 			}
-			if (velocity.x < 0 && velocity.y > 0)
+			if (walking_angle > -5 * PI_6 && walking_angle < -2 * PI_3)
 			{
 				play("walkdownleft");
 			}
-			if (velocity.x > 0 && velocity.y < 0)
+			if (walking_angle > PI_6 && walking_angle < PI_3)
 			{
 				play("walkupright");
 			}
-			if (velocity.x < 0 && velocity.y < 0)
+			if (walking_angle > 2 * PI_3 && walking_angle < 5 * PI_6)
 			{
 				play("walkupleft");
 			}
@@ -122,7 +136,7 @@ package characters
 		{
 			// Run all functions
 			lookOut(target);
-			//run behavrous
+			// Run behaviours
 			behave.update();
 			normalizeVelocity();
 			processAnimation();
