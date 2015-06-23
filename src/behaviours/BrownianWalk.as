@@ -3,6 +3,7 @@ package behaviours
 	import characters.Enemy;
 	import characters.Hero;
 	import org.flixel.FlxG;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	/**
@@ -48,6 +49,23 @@ package behaviours
 				Enemy(target).normalizeVelocity();
 			}else {
 				target.velocity.x = target.velocity.y = 0;	
+			}
+			
+			if (target.isTouching(FlxObject.DOWN))
+			{
+				walk();
+			}
+			if (target.isTouching(FlxObject.LEFT))
+			{
+				walk();
+			}				
+			if (target.isTouching(FlxObject.UP))
+			{
+				walk();
+			}
+			if (target.isTouching(FlxObject.RIGHT))
+			{
+				walk();
 			}
 		}
 		
