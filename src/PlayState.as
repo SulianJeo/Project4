@@ -40,16 +40,16 @@ package
 			// Spawn map
 			layer0 = new Background;
 			add(layer0);
-			// Spawn enemy
-			enemySprite = new Enemy(heroSprite, layer0);
-			enemySprite.x = 240;
-			enemySprite.y = 240;
-			add(enemySprite);
 			// Spawn hero
 			heroSprite = new Hero;
 			heroSprite.x = 96;
 			heroSprite.y = 96;
 			add(heroSprite);
+			// Spawn enemy
+			enemySprite = new Enemy(heroSprite, layer0);
+			enemySprite.x = 240;
+			enemySprite.y = 240;
+			add(enemySprite);
 			// Spawn foreground
 			layer1 = new Foreground1;
 			add(layer1);
