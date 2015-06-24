@@ -18,6 +18,8 @@ package
 		
 		public function Preloader() 
 		{
+			trace("preloader ran");
+			
 			if (stage) {
 				stage.scaleMode = StageScaleMode.NO_SCALE;
 				stage.align = StageAlign.TOP_LEFT;
