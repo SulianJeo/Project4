@@ -4,7 +4,11 @@ package
 	import characters.Hero;
 	import characters.Slime;
 	import flash.display.Sprite;
-	import maps.Map1;
+	import maps.Background;
+	import maps.Foreground1;
+	import maps.Foreground2;
+	import maps.Foreground3;
+	import maps.Foreground4;
 	import org.flixel.*;
 	/**
 	 * ...
@@ -13,7 +17,12 @@ package
 	public class PlayState extends FlxState
 	{
 		// Map variable
-		private var mapSprite:Map1;
+		private var layer0:Background;
+		private var layer1:Foreground1;
+		private var layer2:Foreground2;
+		private var layer3:Foreground3;
+		private var layer4:Foreground4;
+		
 		// Character variables
 		private var heroSprite:Hero;
 		private var enemySprite:Enemy;
@@ -29,36 +38,43 @@ package
 		override public function create():void 
 		{
 			// Spawn map
-			mapSprite = new Map1;
-			add(mapSprite);
+			layer0 = new Background;
+			add(layer0);
+			// Spawn enemy
+			enemySprite = new Enemy(heroSprite, layer0);
+			enemySprite.x = 240;
+			enemySprite.y = 240;
+			add(enemySprite);
 			// Spawn hero
 			heroSprite = new Hero;
-			heroSpawnX = FlxG.width / 2 - heroSprite.width / 2;
-			heroSpawnY = FlxG.height/2 - heroSprite.height / 2;
-			heroSprite.x = heroSpawnX;
-			heroSprite.y = heroSpawnY;
+			heroSprite.x = 96;
+			heroSprite.y = 96;
 			add(heroSprite);
-			// Spawn enemy
-			enemySprite = new Enemy(heroSprite, mapSprite);
-			enemySprite.x = 24;
-			enemySprite.y = 48;
-			add(enemySprite);
+			// Spawn foreground
+			layer1 = new Foreground1;
+			add(layer1);
+			layer2 = new Foreground2;
+			add(layer2);
+			layer3 = new Foreground3;
+			add(layer3);
+			layer4 = new Foreground4;
+			add(layer4);
 			// Spawn slime
 			var s:Slime = new Slime(heroSprite);
 			s.x = heroSprite.x;
 			s.y = heroSprite.y;
 			//add(s);
 			// Fix camera
-			FlxG.camera.setBounds(0, 0, mapSprite.width, mapSprite.height);
+			FlxG.camera.setBounds(0, 0, layer0.width, layer0.height);
 			FlxG.camera.follow(heroSprite, 2);
 			FlxG.camera.deadzone = new FlxRect(FlxG.width * 3 / 8, FlxG.height * 3 / 8, FlxG.width / 4, FlxG.height / 4);
-			mapSprite.follow();
+			layer0.follow();
 		}
 		
 		override public function update():void
 		{
-			FlxG.collide(mapSprite, heroSprite);
-			FlxG.collide(mapSprite, enemySprite);
+			FlxG.collide(layer0, heroSprite);
+			FlxG.collide(layer0, enemySprite);
 			super.update();
 		}
 		
