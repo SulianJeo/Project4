@@ -1,5 +1,6 @@
 package 
 {
+	import characters.Coin;
 	import characters.Enemy;
 	import characters.Hero;
 	import characters.Slime;
@@ -25,6 +26,7 @@ package
 		
 		// Character variables
 		private var depthsortedgroup:FlxGroup;
+		private var coinGroup:FlxGroup;
 		private var heroSprite:Hero;
 		private var enemySprite:Enemy;
 		// Hero spawn location
@@ -54,6 +56,11 @@ package
 			depthsortedgroup.add(enemySprite);
 			depthsortedgroup.add(heroSprite);
 			add(depthsortedgroup);
+			//coins
+			coinGroup = new FlxGroup();
+			add(coinGroup);
+			var c:Coin = Coin(coinGroup.add(new Coin()));
+			c.x = c.y = 200;
 			// Spawn foreground
 			layer1 = new Foreground1;
 			add(layer1);
@@ -78,8 +85,14 @@ package
 		override public function update():void
 		{
 			FlxG.collide(layer0, depthsortedgroup);
+			FlxG.overlap(heroSprite, coinGroup, collect);
 			depthsortedgroup.sort();
 			super.update();
+		}
+		
+		private function collect(o1:FlxObject, o2:FlxObject):void 
+		{
+			o2.kill();
 		}
 		
 	}
