@@ -65,7 +65,6 @@ package behaviours
 			{
 				target.velocity.x = c1.x - t1.x;
 				target.velocity.y = c1.y - t1.y;
-				trace("can see");
 				/*while (waypoints.length > 30) {
 				waypoints.shift();	
 				}*/

@@ -15,6 +15,8 @@ package characters
 	 */
 	public class Enemy extends FlxSprite 
 	{
+		private var grassSound:FlxSound;
+		
 		// Import graphic
 		[Embed(source = "../../assets/characters/Myrmidon.png")]
 		internal var enemySprite:Class;
@@ -40,6 +42,10 @@ package characters
 		
 		public function Enemy(target:FlxSprite, map:FlxTilemap)
 		{
+			// Sound
+			grassSound = new FlxSound();
+			grassSound.loadEmbedded(Hero.grassWalk, true);
+			
 			// Graphic and animations
 			loadGraphic(enemySprite, true, false, 32, 32);
 			addAnimation("idle", [0, 1, 2, 3, 2, 1], 4, true);
@@ -153,7 +159,15 @@ package characters
 			behave.update();
 			normalizeVelocity();
 			processAnimation();
-			
+			// Sound
+			if (velocity.x != 0 || velocity.y != 0){
+				grassSound.play();
+			}else {
+				grassSound.stop();
+			}
+			var dis:Number = BreadCrumbs.dist2(new FlxPoint(this.x, this.y), new FlxPoint(target.x, target.y));
+			grassSound.volume = 1- Math.min(dis / ((FlxG.width / 2) * (FlxG.width / 2)), 1);
+			trace(grassSound.volume);
 			// Update
 			super.update();
 		}
