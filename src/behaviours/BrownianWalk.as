@@ -3,6 +3,8 @@ package behaviours
 	import characters.Enemy;
 	import characters.Hero;
 	import org.flixel.FlxG;
+	import org.flixel.FlxObject;
+	import org.flixel.FlxPoint;
 	import org.flixel.FlxSprite;
 	/**
 	 * ...
@@ -39,12 +41,31 @@ package behaviours
 				walk();
 				time = 0;
 			}
-			if (Math.round(newx) != Math.round(target.x) ||
-				Math.round(newy) != Math.round(target.y)) 
+			if (BreadCrumbs.dist2(new FlxPoint(newx, newy), 
+								  new FlxPoint(target.x, target.y)) > 100) 
 			{
 				target.velocity.x = newx - target.x;
 				target.velocity.y = newy - target.y;
 				Enemy(target).normalizeVelocity();
+			}else {
+				target.velocity.x = target.velocity.y = 0;	
+			}
+			
+			if (target.isTouching(FlxObject.DOWN))
+			{
+				walk();
+			}
+			if (target.isTouching(FlxObject.LEFT))
+			{
+				walk();
+			}				
+			if (target.isTouching(FlxObject.UP))
+			{
+				walk();
+			}
+			if (target.isTouching(FlxObject.RIGHT))
+			{
+				walk();
 			}
 		}
 		
