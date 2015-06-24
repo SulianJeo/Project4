@@ -17,6 +17,8 @@ package
 	 */
 	public class PlayState extends FlxState
 	{
+		private var scoreText:FlxText;
+		
 		// Map variable
 		private var layer0:Background;
 		private var layer1:Foreground1;
@@ -83,6 +85,11 @@ package
 			FlxG.camera.follow(heroSprite, 2);
 			FlxG.camera.deadzone = new FlxRect(FlxG.width * 3 / 8, FlxG.height * 3 / 8, FlxG.width / 4, FlxG.height / 4);
 			layer0.follow();
+			
+			scoreText = new FlxText(10, 10, 200, "0");
+			scoreText.scrollFactor = new FlxPoint();
+			add(scoreText);
+
 		}
 		
 		override public function update():void
@@ -95,7 +102,9 @@ package
 		
 		private function collect(o1:FlxObject, o2:FlxObject):void 
 		{
-			o2.kill();
+			scoreText.text = 1+int(scoreText.text)+""
+			o2.x += Math.random() * 200 - 100;
+			o2.y += Math.random() * 200 - 100;
 		}
 		
 	}
