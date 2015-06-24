@@ -14,14 +14,33 @@ package characters
 		//Import graphic
 		[Embed(source = "../../assets/characters/Chrom.png")]
 		internal var chromSprite:Class;
+		
 		// Speed variables
 		private var walkingSpeed:Number = 96;
 		
-		public function Hero() 
+		// HP variable
+		public var hitPoints:Number = 100;
+		
+		// Walking angle variables
+		private var direction:String = "idle";
+		private var PI_6:Number = Math.PI / 6;
+		private var PI_3:Number = Math.PI / 3;
+		
+		// Combat variables
+		private var attackRange:Number = 24;
+		private var attackWidth:Number = 24;
+		private var attackDamage:Number = 10;
+		private var time:Number = 0;
+		private var attackCooldown:Number = 1;
+		private var attacking:Boolean = false;
+		private var target:Enemy;
+		
+		public function Hero(target:Enemy) 
 		{
 			// Graphic and animations
 			loadGraphic(chromSprite, true, false, 32, 32);
 			addAnimation("idle", [0, 1, 2, 3, 2, 1], 4, true);
+			addAnimation("attack", [4, 5, 6, 7, 6, 5, 4], 8, false);
 			addAnimation("walkleft", [8, 9, 10, 11, 10, 9], 8, true);
 			addAnimation("walkright", [12, 13, 14, 15, 14, 13], 8, true);
 			addAnimation("walkdown", [16, 17, 18, 19, 18, 17], 8, true);
@@ -35,10 +54,47 @@ package characters
 			height = 14;
 			offset.x = 8;
 			offset.y = 15;
+			// Set target
+			this.target = target;
 		}
+		
+		// Attack function
+		private function attack():void
+		{
+			if (direction == "left")
+			{
+				if ((target.x < x && target.x > x - attackRange) && (target.y < y + attackWidth / 2 && target.y > y - attackWidth / 2))
+				{
+					target.hitPoints = target.hitPoints - attackDamage;
+				}
+			}
+			if (direction == "right")
+			{
+				if ((target.x > x && target.x < x + attackRange) && (target.y < y + attackWidth / 2 && target.y > y - attackWidth / 2))
+				{
+					target.hitPoints = target.hitPoints - attackDamage;
+				}
+			}
+			if (direction == "up")
+			{
+				if ((target.x < x + attackWidth / 2 && target.x > x - attackWidth / 2) && (target.y < y && target.y > y - attackRange))
+				{
+					target.hitPoints = target.hitPoints - attackDamage;
+				}
+			}
+			if (direction == "down" || direction == "idle")
+			{
+				if ((target.x < x + attackWidth / 2 && target.x > x - attackWidth / 2) && (target.y > y && target.y < y + attackRange))
+				{
+					target.hitPoints = target.hitPoints - attackDamage;
+				}
+			}
+		}
+		
 		// Player controls
 		private function processControl():void
 		{
+			// Movement
 			if (FlxG.keys.UP || FlxG.keys.W)
 			{
 				velocity.y = -walkingSpeed;
@@ -55,43 +111,98 @@ package characters
 			{
 				velocity.x = walkingSpeed;
 			}
+			// Attacks
+			if (FlxG.keys.SPACE)
+			{
+				if (time >= attackCooldown)
+				{
+				attack();
+				time = 0;
+				}
+			}
 		}
+		
+		private function faceDirection():void
+		{
+			// Determine travel angle
+			var walking_angle:Number = Math.atan2(-velocity.y, velocity.x)
+			
+			// Match animations to angles
+			if (walking_angle <= PI_6 && walking_angle >= -PI_6)
+			{
+				direction = "right";
+			}
+			if ((walking_angle >= 5 * PI_6 && walking_angle <= Math.PI) || (walking_angle <= -5 * PI_6 && walking_angle >= -Math.PI))
+			{
+				direction = "left";
+			}
+			if (walking_angle <= -PI_3 && walking_angle >= -2 * PI_3)
+			{
+				direction = "down";
+			}
+			if (walking_angle <= 2 * PI_3 && walking_angle >= PI_3)
+			{
+				direction = "up";
+			}
+			if (walking_angle > -PI_3 && walking_angle < -PI_6)
+			{
+				direction = "downright";
+			}
+			if (walking_angle > -5 * PI_6 && walking_angle < -2 * PI_3)
+			{
+				direction = "downleft";
+			}
+			if (walking_angle > PI_6 && walking_angle < PI_3)
+			{
+				direction = "upright";
+			}
+			if (walking_angle > 2 * PI_3 && walking_angle < 5 * PI_6)
+			{
+				direction = "upleft";
+			}
+			if (velocity.x == 0 && velocity.y == 0)
+			{
+				direction = "idle";
+			}
+		}
+		
 		// Play hero animations
 		private function processAnimation():void
 		{
-			if (velocity.x > 0 && velocity.y == 0)
+			// Match animations to direction
+			if (direction == "right")
 			{
 				play("walkright");
 			}
-			if (velocity.x < 0 && velocity.y == 0)
+			if (direction == "left")
 			{
 				play("walkleft");
 			}
-			if (velocity.x == 0 && velocity.y > 0)
+			if (direction == "down")
 			{
 				play("walkdown");
 			}
-			if (velocity.x == 0 && velocity.y < 0)
+			if (direction == "up")
 			{
 				play("walkup");
 			}
-			if (velocity.x > 0 && velocity.y > 0)
+			if (direction == "downright")
 			{
 				play("walkdownright");
 			}
-			if (velocity.x < 0 && velocity.y > 0)
+			if (direction == "downleft")
 			{
 				play("walkdownleft");
 			}
-			if (velocity.x > 0 && velocity.y < 0)
+			if (direction == "upright")
 			{
 				play("walkupright");
 			}
-			if (velocity.x < 0 && velocity.y < 0)
+			if (direction == "upleft")
 			{
 				play("walkupleft");
 			}
-			if (velocity.x == 0 && velocity.y == 0)
+			if (direction == "idle")
 			{
 				play("idle");
 			}
@@ -107,13 +218,16 @@ package characters
 		
 		override public function update():void
 		{
-			// Eeset velocity every frame
+			// Reset velocity every frame
 			velocity.x = 0
 			velocity.y = 0
 			// Run all functions
 			processControl();
 			normalizeVelocity();
+			faceDirection();
 			processAnimation();
+			// Timer
+			time = time + FlxG.elapsed;
 			// Update
 			super.update();
 		}

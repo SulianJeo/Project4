@@ -41,7 +41,7 @@ package
 			layer0 = new Background;
 			add(layer0);
 			// Spawn hero
-			heroSprite = new Hero;
+			heroSprite = new Hero(enemySprite);
 			heroSprite.x = 96;
 			heroSprite.y = 96;
 			add(heroSprite);
