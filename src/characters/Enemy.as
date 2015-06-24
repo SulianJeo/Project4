@@ -153,7 +153,11 @@ package characters
 			behave.update();
 			normalizeVelocity();
 			processAnimation();
-			
+			// Kill if 0 HP
+			if (hitPoints <= 0)
+			{
+				kill();
+			}
 			// Update
 			super.update();
 		}

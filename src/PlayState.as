@@ -51,6 +51,9 @@ package
 			enemySprite = new Enemy(heroSprite, layer0);
 			enemySprite.x = 240;
 			enemySprite.y = 240;
+			//add(enemySprite);
+			// Set target
+			heroSprite.target = enemySprite;
 			//depth sorting
 			depthsortedgroup = new FlxGroup();
 			depthsortedgroup.add(enemySprite);

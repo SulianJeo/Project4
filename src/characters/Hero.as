@@ -33,7 +33,7 @@ package characters
 		private var time:Number = 0;
 		private var attackCooldown:Number = 1;
 		private var attacking:Boolean = false;
-		private var target:Enemy;
+		public var target:Enemy;
 		
 		public function Hero(target:Enemy) 
 		{
