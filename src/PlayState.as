@@ -24,6 +24,7 @@ package
 		private var layer4:Foreground4;
 		
 		// Character variables
+		private var depthsortedgroup:FlxGroup;
 		private var heroSprite:Hero;
 		private var enemySprite:Enemy;
 		// Hero spawn location
@@ -44,12 +45,15 @@ package
 			heroSprite = new Hero;
 			heroSprite.x = 96;
 			heroSprite.y = 96;
-			add(heroSprite);
-			// Spawn enemy
+			//aadd(heroSprite);
 			enemySprite = new Enemy(heroSprite, layer0);
 			enemySprite.x = 240;
 			enemySprite.y = 240;
-			add(enemySprite);
+			//depth sorting
+			depthsortedgroup = new FlxGroup();
+			depthsortedgroup.add(enemySprite);
+			depthsortedgroup.add(heroSprite);
+			add(depthsortedgroup);
 			// Spawn foreground
 			layer1 = new Foreground1;
 			add(layer1);
@@ -73,8 +77,8 @@ package
 		
 		override public function update():void
 		{
-			FlxG.collide(layer0, heroSprite);
-			FlxG.collide(layer0, enemySprite);
+			FlxG.collide(layer0, depthsortedgroup);
+			depthsortedgroup.sort();
 			super.update();
 		}
 		
