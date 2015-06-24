@@ -40,14 +40,14 @@ package characters
 			// Graphic and animations
 			loadGraphic(enemySprite, true, false, 32, 32);
 			addAnimation("idle", [0, 1, 2, 3, 2, 1], 4, true);
-			addAnimation("walkleft", [8, 9, 10, 11, 10, 9], 8, true);
-			addAnimation("walkright", [12, 13, 14, 15, 14, 13], 8, true);
-			addAnimation("walkdown", [16, 17, 18, 19, 18, 17], 8, true);
-			addAnimation("walkup", [20, 21, 22, 23, 22, 21], 8, true);
-			addAnimation("walkdownleft", [24, 25, 26, 27, 26, 25], 8, true);
-			addAnimation("walkdownright", [28, 29, 30, 31, 30, 29], 8, true);
-			addAnimation("walkupleft", [32, 33, 34, 35, 34, 33], 8, true);
-			addAnimation("walkupright", [36, 37, 38, 39, 38, 37], 8, true);
+			addAnimation("walkleft", [8, 9, 10, 11, 10, 9], 6, true);
+			addAnimation("walkright", [12, 13, 14, 15, 14, 13], 6, true);
+			addAnimation("walkdown", [16, 17, 18, 19, 18, 17], 6, true);
+			addAnimation("walkup", [20, 21, 22, 23, 22, 21], 6, true);
+			addAnimation("walkdownleft", [24, 25, 26, 27, 26, 25], 6, true);
+			addAnimation("walkdownright", [28, 29, 30, 31, 30, 29], 6, true);
+			addAnimation("walkupleft", [32, 33, 34, 35, 34, 33], 6, true);
+			addAnimation("walkupright", [36, 37, 38, 39, 38, 37], 6, true);
 			
 			// Set hitbox
 			width = 16;
@@ -58,7 +58,7 @@ package characters
 			// set target property equivalent to passed variable
 			this.target = target;
 			
-			// add brownian walk and breakdumbs AI but only activate BW in the beginning
+			// add brownian walk and breadcrumbs AI but only activate BW in the beginning
 			behave = new BehaviourRunner(this);
 			behave.addBehaviour("bw", new BrownianWalk(20, 20, 2));
 			behave.addBehaviour("bc", new BreadCrumbs(target, map));

@@ -31,8 +31,8 @@ package characters
 			addAnimation("walkupright", [32, 33, 34, 35, 34, 33], 8, true);
 			addAnimation("walkupleft", [36, 37, 38, 39, 38, 37], 8, true);
 			// Set hitbox
-			width = 16;
-			height = 16;
+			width = 14;
+			height = 14;
 			offset.x = 8;
 			offset.y = 15;
 		}
