@@ -67,8 +67,6 @@ package characters
 		// Enemy AI
 		private function lookOut(target:FlxSprite):void
 		{
-			
-			
 			if (Math.sqrt(Math.pow(target.x - x, 2) + (Math.pow(target.y - y, 2))) < tauntDistance)
 			{
 				taunted = true;
