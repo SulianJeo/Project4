@@ -168,6 +168,11 @@ package characters
 			var dis:Number = BreadCrumbs.dist2(new FlxPoint(this.x, this.y), new FlxPoint(target.x, target.y));
 			grassSound.volume = 1- Math.min(dis / ((FlxG.width / 2) * (FlxG.width / 2)), 1);
 			trace(grassSound.volume);
+			// Kill if 0 HP
+			if (hitPoints <= 0)
+			{
+				kill();
+			}
 			// Update
 			super.update();
 		}
