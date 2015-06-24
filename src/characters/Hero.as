@@ -27,13 +27,15 @@ package characters
 		private var PI_3:Number = Math.PI / 3;
 		
 		// Combat variables
-		private var attackRange:Number = 24;
+		private var attackHeight:Number = 24;
 		private var attackWidth:Number = 24;
 		private var attackDamage:Number = 10;
 		private var time:Number = 0;
 		private var attackCooldown:Number = 1;
 		private var attacking:Boolean = false;
 		public var target:Enemy;
+		public var hitBox:FlxObject;
+		public var attackBox:FlxObject;
 		
 		public function Hero(target:Enemy) 
 		{
@@ -50,10 +52,12 @@ package characters
 			addAnimation("walkupright", [32, 33, 34, 35, 34, 33], 8, true);
 			addAnimation("walkupleft", [36, 37, 38, 39, 38, 37], 8, true);
 			// Set hitbox
+			//hitBox = new FlxRect(9, 15, 14, 14);
 			width = 14;
 			height = 14;
-			offset.x = 8;
+			offset.x = 9;
 			offset.y = 15;
+			attackBox = new FlxObject(4, 4, attackWidth, attackHeight);
 			// Set target
 			this.target = target;
 		}
@@ -63,30 +67,38 @@ package characters
 		{
 			if (direction == "left")
 			{
-				if ((target.x < x && target.x > x - attackRange) && (target.y < y + attackWidth / 2 && target.y > y - attackWidth / 2))
+				attackBox.x = attackBox.x - attackBox.width / 2;
+				if (FlxG.overlap(attackBox, target))
 				{
 					target.hitPoints = target.hitPoints - attackDamage;
+					attackBox.x = attackBox.x + attackBox.width / 2;
 				}
 			}
 			if (direction == "right")
 			{
-				if ((target.x > x && target.x < x + attackRange) && (target.y < y + attackWidth / 2 && target.y > y - attackWidth / 2))
+				attackBox.x = attackBox.x + attackBox.width / 2;
+				if (FlxG.overlap(attackBox, target))
 				{
 					target.hitPoints = target.hitPoints - attackDamage;
+					attackBox.x = attackBox.x - attackBox.width / 2;
 				}
 			}
 			if (direction == "up")
 			{
-				if ((target.x < x + attackWidth / 2 && target.x > x - attackWidth / 2) && (target.y < y && target.y > y - attackRange))
+				attackBox.y = attackBox.y - attackBox.height / 2;
+				if (FlxG.overlap(attackBox, target))
 				{
 					target.hitPoints = target.hitPoints - attackDamage;
+					attackBox.y = attackBox.y + attackBox.height / 2;
 				}
 			}
 			if (direction == "down" || direction == "idle")
 			{
-				if ((target.x < x + attackWidth / 2 && target.x > x - attackWidth / 2) && (target.y > y && target.y < y + attackRange))
+				attackBox.y = attackBox.y + attackBox.height / 2;
+				if (FlxG.overlap(attackBox, target))
 				{
 					target.hitPoints = target.hitPoints - attackDamage;
+					attackBox.y = attackBox.y - attackBox.height / 2;
 				}
 			}
 		}

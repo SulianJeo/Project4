@@ -154,6 +154,7 @@ package characters
 			normalizeVelocity();
 			processAnimation();
 			// Kill if 0 HP
+			trace(hitPoints);
 			if (hitPoints <= 0)
 			{
 				kill();
