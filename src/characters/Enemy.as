@@ -24,6 +24,9 @@ package characters
 		private var tauntDistance:Number = 80;
 		private var stopDistance:Number = 256;
 		
+		// HP variable
+		public var hitPoints:Number = 20;
+		
 		// Walking angle variables
 		private var PI_6:Number = Math.PI / 6;
 		private var PI_3:Number = Math.PI / 3;
@@ -40,6 +43,7 @@ package characters
 			// Graphic and animations
 			loadGraphic(enemySprite, true, false, 32, 32);
 			addAnimation("idle", [0, 1, 2, 3, 2, 1], 4, true);
+			addAnimation("attack", [4, 5, 6, 7, 6, 5, 4], 8, false);
 			addAnimation("walkleft", [8, 9, 10, 11, 10, 9], 6, true);
 			addAnimation("walkright", [12, 13, 14, 15, 14, 13], 6, true);
 			addAnimation("walkdown", [16, 17, 18, 19, 18, 17], 6, true);
