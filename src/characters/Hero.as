@@ -29,6 +29,7 @@ package characters
 		// Combat variables
 		private var attackHeight:Number = 24;
 		private var attackWidth:Number = 24;
+		private var attackRange:Number = 12;
 		private var attackDamage:Number = 10;
 		private var time:Number = 0;
 		private var attackCooldown:Number = 1;
@@ -57,7 +58,7 @@ package characters
 			height = 14;
 			offset.x = 9;
 			offset.y = 15;
-			attackBox = new FlxObject(4, 4, attackWidth, attackHeight);
+			attackBox = new FlxObject(0, 0, attackWidth, attackHeight);
 			// Set target
 			this.target = target;
 		}
@@ -65,41 +66,9 @@ package characters
 		// Attack function
 		private function attack():void
 		{
-			if (direction == "left")
+			if (FlxG.overlap(attackBox, target))
 			{
-				attackBox.x = attackBox.x - attackBox.width / 2;
-				if (FlxG.overlap(attackBox, target))
-				{
-					target.hitPoints = target.hitPoints - attackDamage;
-					attackBox.x = attackBox.x + attackBox.width / 2;
-				}
-			}
-			if (direction == "right")
-			{
-				attackBox.x = attackBox.x + attackBox.width / 2;
-				if (FlxG.overlap(attackBox, target))
-				{
-					target.hitPoints = target.hitPoints - attackDamage;
-					attackBox.x = attackBox.x - attackBox.width / 2;
-				}
-			}
-			if (direction == "up")
-			{
-				attackBox.y = attackBox.y - attackBox.height / 2;
-				if (FlxG.overlap(attackBox, target))
-				{
-					target.hitPoints = target.hitPoints - attackDamage;
-					attackBox.y = attackBox.y + attackBox.height / 2;
-				}
-			}
-			if (direction == "down" || direction == "idle")
-			{
-				attackBox.y = attackBox.y + attackBox.height / 2;
-				if (FlxG.overlap(attackBox, target))
-				{
-					target.hitPoints = target.hitPoints - attackDamage;
-					attackBox.y = attackBox.y - attackBox.height / 2;
-				}
+				target.hitPoints = target.hitPoints - attackDamage;
 			}
 		}
 		
@@ -132,6 +101,15 @@ package characters
 				time = 0;
 				}
 			}
+		}
+		
+		// Normalize diagonal movement to walking speed.
+		private function normalizeVelocity():void
+		{
+			var p:Point = new Point();
+			velocity.copyToFlash(p);
+			p.normalize(walkingSpeed);
+			velocity.copyFromFlash(p);
 		}
 		
 		private function faceDirection():void
@@ -219,13 +197,55 @@ package characters
 				play("idle");
 			}
 		}
-		// Normalize diagonal movement to walking speed.
-		private function normalizeVelocity():void
+		
+		// attackBox position function
+		private function attackBoxPosition():void
 		{
-			var p:Point = new Point();
-			velocity.copyToFlash(p);
-			p.normalize(walkingSpeed);
-			velocity.copyFromFlash(p);
+			if (direction == "right")
+			{
+				attackBox.x = x + attackRange;
+				attackBox.y = y;
+			}
+			if (direction == "left")
+			{
+				attackBox.x = x - attackRange;
+				attackBox.y = y;
+			}
+			if (direction == "down")
+			{
+				attackBox.x = x;
+				attackBox.y = y + attackRange;
+			}
+			if (direction == "up")
+			{
+				attackBox.x = x;
+				attackBox.y = y - attackRange;
+			}
+			if (direction == "downright")
+			{
+				attackBox.x = x + attackRange;
+				attackBox.y = y + attackRange;
+			}
+			if (direction == "downleft")
+			{
+				attackBox.x = x - attackRange;
+				attackBox.y = y + attackRange;
+			}
+			if (direction == "upright")
+			{
+				attackBox.x = x + attackRange;
+				attackBox.y = y - attackRange;
+			}
+			if (direction == "upleft")
+			{
+				attackBox.x = x - attackRange;
+				attackBox.y = y - attackRange;
+			}
+			if (direction == "idle")
+			{
+				attackBox.x = x;
+				attackBox.y = y + attackRange;
+			}
 		}
 		
 		override public function update():void
@@ -238,6 +258,7 @@ package characters
 			normalizeVelocity();
 			faceDirection();
 			processAnimation();
+			attackBoxPosition()
 			// Timer
 			time = time + FlxG.elapsed;
 			// Update
