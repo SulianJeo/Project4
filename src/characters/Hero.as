@@ -1,6 +1,7 @@
 package characters 
 {
 	import flash.geom.Point;
+	import flash.media.Sound;
 	import org.flixel.*;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -11,6 +12,10 @@ package characters
 	 */
 	public class Hero extends FlxSprite 
 	{
+		[Embed(source="../../assets/mus/189640__yuval__grass-loop-short.mp3")]
+		public static var grassWalk:Class;
+		private var grassSound:FlxSound;
+		
 		//Import graphic
 		[Embed(source = "../../assets/characters/Chrom.png")]
 		internal var chromSprite:Class;
@@ -37,6 +42,9 @@ package characters
 		
 		public function Hero(target:Enemy) 
 		{
+			// Sound
+			grassSound = new FlxSound();
+			grassSound.loadEmbedded(grassWalk, true);
 			// Graphic and animations
 			loadGraphic(chromSprite, true, false, 32, 32);
 			addAnimation("idle", [0, 1, 2, 3, 2, 1], 4, true);
@@ -226,6 +234,12 @@ package characters
 			normalizeVelocity();
 			faceDirection();
 			processAnimation();
+			// Sound
+			if (velocity.x != 0 || velocity.y != 0){
+				grassSound.play();
+			}else {
+				grassSound.stop();
+			}
 			// Timer
 			time = time + FlxG.elapsed;
 			// Update

@@ -17,6 +17,10 @@ package
 	 */
 	public class PlayState extends FlxState
 	{
+		[Embed(source = "../assets/mus/Universal.mp3")]
+		private var bgSong:Class;
+		private var sound:FlxSound;
+		
 		// Map variable
 		private var layer0:Background;
 		private var layer1:Foreground1;
@@ -40,6 +44,11 @@ package
 		
 		override public function create():void 
 		{
+			sound = new FlxSound();
+			sound.loadEmbedded(bgSong, true);
+			add(sound);
+			sound.play();
+			sound.volume = 0;
 			// Spawn map
 			layer0 = new Background;
 			add(layer0);
@@ -87,6 +96,8 @@ package
 		
 		override public function update():void
 		{
+			if (sound.volume < 0.5)
+				sound.volume += 0.001;
 			FlxG.collide(layer0, depthsortedgroup);
 			FlxG.overlap(heroSprite, coinGroup, collect);
 			depthsortedgroup.sort();
